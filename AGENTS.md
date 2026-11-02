@@ -28,8 +28,8 @@ an `upstream` remote is configured in your checkout).
   `src/lib/store/compliance-server-sync.ts`; self-test via
   `npm run check:compliance-persistence:self-test`.
 - QA gates are plain Node scripts in `scripts/check-*.mjs`. Workflows:
-  `.github/workflows/ci.yml` (CI) and
-  `.github/workflows/supabase-keepalive.yml` (Supabase keep-alive).
+  `.github/workflows/ci.yml` (CI), `.github/workflows/codeql.yml` (CodeQL),
+  and `.github/workflows/supabase-keepalive.yml` (Supabase keep-alive).
   Docs root: `docs/README.md`.
 
 ## Key commands
