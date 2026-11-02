@@ -51,7 +51,7 @@ For the public GitHub project overview, use the repository root [README](../READ
 
 ## Current Repository Shape
 
-See [Architecture](./reference/ARCHITECTURE.md) for the current source layout, runtime boundaries, and data flow. Database schema and numbered migrations live in [database/](../database), and CI plus the Supabase keep-alive workflow live in [.github/workflows/](../.github/workflows).
+See [Architecture](./reference/ARCHITECTURE.md) for the current source layout, runtime boundaries, and data flow. Database schema and numbered migrations live in [database/](../database), and CI, CodeQL scanning, and the Supabase keep-alive workflow live in [.github/workflows/](../.github/workflows).
 
 ## Documentation Rules
 
