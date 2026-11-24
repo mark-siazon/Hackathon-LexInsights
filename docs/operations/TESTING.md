@@ -1,5 +1,13 @@
 # Testing
 
+On the `mark-siazon/Hackathon-LexInsights` fork, the weekly health audit reports
+that duplicate CodeQL is intentionally disabled and verifies GitHub's
+[default CodeQL workflow on Iron-Mark](https://github.com/Iron-Mark/Hackathon-LexInsights/actions/workflows/337357463).
+It requires a successful analysis of the current canonical default branch
+within the last 10 days and flags fork-only changes outside its explicit
+audit, configuration, and documentation allowlist. The canonical run is
+evidence of scan coverage. Alert counts in the audit are for the fork.
+
 Run commands from the repository root.
 
 ## Fast Checks
