@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   checks: read
   contents: read
   issues: write
@@ -28,6 +29,10 @@ jobs:
       GH_REPO: ${{ github.repository }}
       AUDIT_ISSUE_TITLE: "[bot] Weekly repository health audit"
     steps:
+      - name: Checkout audit code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Inspect settings, pull requests, alerts, and stale branches
         shell: bash
         run: |
@@ -124,12 +129,9 @@ jobs:
             fi
           done
 
-          if analysis="$(gh api "repos/${GH_REPO}/code-scanning/analyses?per_page=1" 2>/dev/null)"; then
-            latest_analysis="$(jq -r '.[0].created_at // "none"' <<<"${analysis}")"
-            [[ "${latest_analysis}" != "none" ]] || add_problem "No CodeQL/code-scanning analysis is available."
-          else
-            add_problem "CodeQL/code-scanning analysis could not be verified."
-            latest_analysis="unavailable"
+          printf '\n## CodeQL coverage\n\n' >> "${report}"
+          if ! node .github/scripts/canonical-scan-coverage.mjs >> "${report}"; then
+            add_problem "Canonical CodeQL coverage could not be verified. See the details above."
           fi
 
           branches_json="$(gh api --paginate "repos/${GH_REPO}/branches?per_page=100" --jq '.[]' | jq -s '.')"
@@ -164,7 +166,6 @@ jobs:
             printf -- "- Verified Dependabot PRs: %s\n" "${dependabot_prs}"
             printf -- "- Fork PRs: %s\n" "${fork_prs}"
             printf -- "- Open alerts: Dependabot=%s, code=%s, secret=%s\n" "${dependabot_alerts}" "${code_alerts}" "${secret_alerts}"
-            printf -- "- Latest code-scanning analysis: %s\n" "${latest_analysis}"
             printf -- "- Auto-merge: %s\n" "${auto_merge}"
             printf -- "- Delete merged branches: %s\n" "${delete_merged}"
             printf -- "- Dependabot vulnerability alerts: %s\n" "${vulnerability_alerts}"
